@@ -1,0 +1,155 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} | about{% endblock %}
+
+{% block content %}
+    
+  <section id="showcase-inner" class="py-5 text-white">
+        <div class="container">
+          <div class="row text-center">
+            <div class="col-md-12">
+              <h1 class="display-4">About Juja Classifieds</h1>
+              <p class="lead">We Help You Find Your Perfect Classifieds around school!</p>
+            </div>
+          </div>
+        </div>
+      </section>
+    
+      <!-- Breadcrumb -->
+      <section id="bc" class="mt-3">
+        <div class="container">
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+              <li class="breadcrumb-item">
+                <a href="{% url 'index' %}">
+                  <i class="fas fa-home"></i> Home</a>
+              </li>
+              <li class="breadcrumb-item active"> About</li>
+            </ol>
+          </nav>
+        </div>
+      </section>
+    
+      <section id="about" class="py-4">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-8">
+              <h2>As Juja Classifieds</h2>
+              <p class="lead">With Juja classified you can search any item you need around juja at the comfort of your chair. </p>
+              <img src="{% static 'img/about.jpg' %}" alt="">
+              <p class="mt-4">We are a small enterprise with the motivation of enabling easy access to goods and services to our fellow comrades. By providing them with a platform to which they can advertise as well as find out which goods and services are offered in juja.  </p>
+              <p> For more info visit our social account listed on top of our site. </p>
+            </div>
+            <div class="col-md-4">
+              {% if som_seller %}
+                {% for seller in som_seller %}
+                  <div class="card">
+                    <img class="card-img-top" src="{{ seller.photo.url }}" alt="Seller of the month">
+                    <div class="card-body">
+                      <h5 class="card-title">Seller Of The Month</h5>
+                      <h6 class="text-secondary">{{seller.name}}</h6>
+                      <p class="card-text">
+                        {{seller.description}}
+                      </p>
+                    </div>
+                  </div>
+                {% endfor %}
+              {% endif %}
+        
+            </div>
+          </div>
+        </div>
+      </section>
+    
+      <!-- Work -->
+      <section id="work" class="bg-dark text-white text-center">
+        <h2 class="display-4">We Help You find Your perfect Classified</h2>
+        <h4>Click the button below to view our published latest items!</h4>
+        <hr>
+        <a href="{% url 'listings' %}" class="btn btn-secondary text-white btn-lg">View Our Featured Items</a>
+      </section>
+    
+      <!-- Team -->
+      <section id="team" class="py-5">
+        <div class="container">
+          <h2 class="text-center">Our Sellers</h2>
+          <div class="row text-center">
+
+            {% if sellers %}
+              {% for seller in sellers %}
+                <div class="col-md-4">
+                    <img src="{{ seller.photo.url }}" alt="" class="rounded-circle mb-3">
+                    <h4>{{seller.name}}</h4>
+                    <p class="text-success">
+                      <i class="fas fa-award text-success mb-3"></i>Seller</p>
+                    <hr>
+                    <p>
+                      <i class="fas fa-phone"></i>{{seller.phone}}</p>
+                    <p>
+                      <i class="fas fa-envelope-open"></i>{{seller.email}}</p>
+                  </div>
+              {% endfor %}
+            {% else %}
+              <div class="col-md-12">
+                <p>
+                  No sellers available
+                </p>
+              </div>
+            {% endif %}
+
+          </div>
+          <br>
+
+          <!-- Pagination -->
+          <div class="row">
+              <div class="col-md-12">
+                {% if sellers.has_other_pages %}
+                  <ul class="pagination">
+                   {% if sellers.has_previous %}
+                    <li class="page-item">
+                      <a href="?page={{sellers.previous_page_number}}" class="page-link">
+                        &laquo;
+                      </a>
+                    </li>
+                   {% else %}
+                   <li class="page-item disabled">
+                     <a class="page-link">
+                       &laquo;
+                     </a>
+                   </li>
+                   {% endif %}
+                   {% for i in sellers.paginator.page_range %}
+                    {% if sellers.number == i %}
+                      <li class="page-item active">
+                        <a class="page-link">{{i}}</a>
+                      </li>
+                    {% else %}
+                      <li class="page-item">
+                        <a href="?page={{i}}" class="page-link">{{i}}</a>
+                      </li>
+                    {% endif %}
+                   {% endfor %}
+                   {% if sellers.has_next %}
+                    <li class="page-item">
+                      <a href="?page={{sellers.next_page_number}}" class="page-link">
+                        &raquo;
+                      </a>
+                    </li>
+                   {% else %}
+                   <li class="page-item disabled">
+                     <a class="page-link">
+                       &raquo;
+                     </a>
+                   </li>
+                   {% endif %}
+                  </ul>
+                {% endif %}
+              </div>
+            </div>
+
+        </div>
+      </section>
+    
+{% endblock %}
